@@ -1,8 +1,42 @@
+html {
+  height: 100%;
+  background-color: whitesmoke;
+}
+
 body {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
   padding: 50px;
   font: 14px "Lucida Grande", Helvetica, Arial, sans-serif;
 }
 
 a {
   color: #00B7FF;
+}
+
+h1 {
+  font-family: 'Roboto', sans-serif;
+}
+
+section.main-card {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  background-color: white;
+  padding: 50px;
+  border-radius: 3px;
+  box-shadow: 1px 1px 9px #c1c1c1;
+}
+
+input#math_input {
+  min-width: 300px;
+  height: 40px;
+  border: 1px solid #d6d6d6;
+  padding-left: 10px;
+  transition: box-shadow 1s ease-in-out;
+}
+
+input#math_input:focus {
+  box-shadow: 1px 1px 9px #c1c1c1;
 }

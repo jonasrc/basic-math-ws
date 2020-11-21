@@ -1,9 +1,58 @@
 extends layout
 
 block content
-  h1= title
-  p Welcome to #{title}
+  section(class='main-card')
+    h1 Online Calculator!
+    h2 Welcome to the Online Calculator
+    p Type your operation using spaces to separate numbers from the operator
+    p i.e. 5 + 3
+    input(type='text' name='math' id='math_input' placeholder='Type your math operation')
+    p(id='response')
+  script(type='text/javascript', src='https://code.jquery.com/jquery-3.5.1.min.js')
   script.
     $(document).ready(() => {
       window.WebSocket = window.WebSocket || window.MozWebSocket;
+      let mathInput = $('#math_input'),
+          response = $('#response');
+
+      if (!window.WebSocket) {
+        response.html('Your browser does not support WebSocket connections. Get another browser!');
+        mathInput.hide();
+        return;
+      }
+
+      let connection = new WebSocket('ws://127.0.0.1:3000');
+
+      connection.onopen = () => {
+        console.log('WebSocket connection is opened and ready to use.');
+      };
+
+      connection.onerror = (error) => {
+        console.log(`Error while sending/receiving data through the WebSocket connection: ${error.message}`);
+      };
+
+      connection.onmessage = (message) => {
+        let json;
+        try {
+          json = JSON.parse(message.data);
+        } catch (e) {
+          console.log('Invalid JSON passed from WebSocket API: ', message.data);
+          return;
+        }
+
+        mathInput.removeAttr('disabled');
+        const status = json.status === 'success' ? 'Result' : 'Error';
+        response.html(`${status}: ${json.content}`);
+      };
+
+      mathInput.on('keydown', function (e) {
+        if (e.keyCode === 13) {
+          const msg = $(this).val();
+          if (!msg) {
+            return;
+          }
+          connection.send(msg);
+          $(this).attr('disabled', 'disabled').val('');
+        }
+      });
     });

@@ -10,8 +10,14 @@ exports.processMessage = (message) => {
 const processUTF8 = (message) => {
     const escapedMsg = escapeMessage(message.utf8Data);
     const splittedMsg = escapedMsg.split(' ');
-    const result = mathOpsService.processOperation(splittedMsg[0], splittedMsg[2], splittedMsg[1]);
-    return result;
+
+    try {
+        const result = mathOpsService.processOperation(splittedMsg[0], splittedMsg[2], splittedMsg[1]);
+        return {status: 'success', content: result};
+    } catch(error) {
+        return {status: 'error', content: error.message};
+
+    }
 }
 
 const escapeMessage = (message) => {

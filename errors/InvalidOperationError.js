@@ -1,4 +1,4 @@
-const ERR_INVALID_OPERATION = 'Invalid operation passed as parameter.';
+const ERR_INVALID_OPERATION = 'Invalid operation passed to service.';
 
 class InvalidOperationError extends Error {
     constructor() {
